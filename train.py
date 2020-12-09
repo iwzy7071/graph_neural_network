@@ -1,30 +1,34 @@
 import torch
 import argparse
 from torch_geometric.datasets import Planetoid
-from torch_geometric.nn import GCNConv, GATConv, SAGEConv, SGConv
 import torch.nn.functional as F
+from models import GAT, SGC, GCN
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 from os.path import join
 import shutil
+import torch_geometric.transforms as T
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', default='GCNConv', type=str)
+parser.add_argument('--model', default='GAT', type=str)
 parser.add_argument('--dataset', default='cora', type=str)
 args = parser.parse_args()
-shutil.rmtree(join('./log', args.model))
-writer = SummaryWriter(log_dir=join('./log', args.model))
+try:
+    shutil.rmtree(join('./log', '{}_{}'.format(args.dataset, args.model)))
+except:
+    pass
+writer = SummaryWriter(log_dir=join('./log', '{}_{}'.format(args.dataset, args.model)))
 
 # build up dataset and model
-dataset = Planetoid(root='./dataset/', name=args.dataset)
-model = eval(args.model)(in_channels=dataset.num_node_features, out_channels=dataset.num_classes)
+dataset = Planetoid(root='./dataset/', name=args.dataset, transform=T.NormalizeFeatures())
+model = eval(args.model)(dataset=dataset)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = model.to(device)
 data = dataset.data.to(device)
-optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.005, weight_decay=5e-4)
 
 best_acc = 0
-for epoch in tqdm(range(200)):
+for epoch in tqdm(range(1000)):
     model.train()
     optimizer.zero_grad()
     out = model(x=data.x, edge_index=data.edge_index)
@@ -44,4 +48,4 @@ for epoch in tqdm(range(200)):
         writer.add_scalar('test_acc', acc, epoch)
         if acc > best_acc:
             best_acc = acc
-            torch.save(model.state_dict(), join('.', 'save', '{}.pt'.format(args.model)))
+            torch.save(model.state_dict(), join('.', 'save', '{}_{}.pt'.format(args.model, args.dataset)))
