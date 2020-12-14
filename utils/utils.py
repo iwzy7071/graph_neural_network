@@ -7,7 +7,6 @@ import torch
 import numpy as np
 import random
 
-# set random seed
 seed = 999
 torch.manual_seed(seed)
 torch.cuda.manual_seed_all(seed)
@@ -45,10 +44,10 @@ def index_to_mask(index, size):
     return mask
 
 
-def random_planetoid_splits(data, num_classes, return_data=True):
+def random_planetoid_splits(data, num_classes):
     indices = []
     for i in range(num_classes):
-        index = (data.y == i).nonzero().view(-1)
+        index = torch.nonzero(data.y == i, as_tuple=False).view(-1)
         index = index[torch.randperm(index.size(0))]
         indices.append(index)
 
@@ -59,6 +58,6 @@ def random_planetoid_splits(data, num_classes, return_data=True):
     data.train_mask = index_to_mask(train_index, size=data.num_nodes)
     data.val_mask = index_to_mask(rest_index[:500], size=data.num_nodes)
     data.test_mask = index_to_mask(rest_index[500:1500], size=data.num_nodes)
-    if return_data:
-        return data
-    return train_index, data
+    print(data.y.size())
+    exit()
+    return data

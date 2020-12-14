@@ -12,6 +12,26 @@ def run(dataset, model, args, permute_masks=None, writer=None):
         data = dataset[0]
         if permute_masks is not None:
             data = permute_masks(data, dataset.num_classes)
+        # random label (realize with permutation)
+        # rand_index = torch.randperm(data.y.size(0))
+        # data.y = data.y[rand_index]
+
+        # random label
+        # data.y = torch.randint_like(data.y, low=0, high=7)
+
+        # RandomInput-Permutation
+        # random_index = torch.randperm(data.x.size(1))
+        # for index in range(data.x.size(0)):
+        #     data.x[index] = data.x[index][random_index]
+
+        # RandomInput
+        # for index in range(data.x.size(0)):
+        #     random_index = torch.randperm(data.x.size(1))
+        #     data.x[index] = data.x[index][random_index]
+
+        # Gaussian
+        for index in range(data.x.size(0)):
+            data.x[index] = torch.randn_like(data.x[index])
         data = data.to(device)
 
         model.to(device).reset_parameters()

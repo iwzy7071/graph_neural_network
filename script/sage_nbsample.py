@@ -12,7 +12,7 @@ dataset = get_planetoid_dataset('cora', normalize_features=True)
 data = dataset[0]
 
 train_idx, data = random_planetoid_splits(data, dataset.num_classes, False)
-train_loader = NeighborSampler(data.edge_index, node_idx=train_idx, sizes=[25, 10], batch_size=1024,
+train_loader = NeighborSampler(data.edge_index, node_idx=train_idx, sizes=[25, 10], batch_size=256,
                                shuffle=True, num_workers=12)
 
 
@@ -32,7 +32,7 @@ class SAGE(torch.nn.Module):
 
     def forward(self, x, adjs):
         for i, (edge_index, _, size) in enumerate(adjs):
-            x_target = x[:size[1]]  # Target nodes are always placed first.
+            x_target = x[:size[1]]
             x = self.convs[i]((x, x_target), edge_index)
             if i != self.num_layers - 1:
                 x = F.relu(x)
@@ -60,11 +60,9 @@ y = data.y.squeeze().to(device)
 
 def train(epoch):
     model.train()
-
     total_loss = total_correct = 0
     for batch_size, n_id, adjs in train_loader:
         adjs = [adj.to(device) for adj in adjs]
-
         optimizer.zero_grad()
         out = model(x[n_id], adjs)
         loss = F.nll_loss(out, y[n_id[:batch_size]])
@@ -76,7 +74,7 @@ def train(epoch):
 
     loss = total_loss / len(train_loader)
     approx_acc = total_correct / train_idx.size(0)
-    print(f'Epoch {epoch:02d}, Loss: {loss:.4f}, Approx. Train: {approx_acc:.4f}')
+    print(f"Train Epoch {epoch:02d}, Loss:{loss:.4f}, Acc:{approx_acc:.4f}")
 
 
 @torch.no_grad()
@@ -84,11 +82,9 @@ def test(epoch):
     model.eval()
     _, pred = model.inference(data).max(dim=1)
     acc = int(pred[data.test_mask].eq(data.y[data.test_mask]).sum().item()) / int(data.test_mask.sum())
-    print(epoch, acc)
+    print(f"Test Epoch {epoch:02d} Acc {acc:.4f}")
 
 
-test_accs = []
-model.reset_parameters()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.003)
 
 for epoch in range(1, 100):

@@ -7,7 +7,7 @@ from utils import visualize
 import os.path as osp
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', type=str, default='GCN')
+parser.add_argument('--model', type=str, default='GCN-Gaussian')
 parser.add_argument('--dataset', type=str, default='cora')
 parser.add_argument('--random_splits', type=bool, default=False)
 parser.add_argument('--runs', type=int, default=1)
@@ -40,10 +40,9 @@ class Net(torch.nn.Module):
 
 dataset = get_planetoid_dataset(args.dataset, args.normalize_features)
 permute_masks = random_planetoid_splits if args.random_splits else None
-net = Net(dataset)
-save_path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'model_save')
-net.load_state_dict(torch.load(osp.join(save_path, '../model_save/{}_{}.pt'.format(args.model, args.dataset))))
-visualize(net, dataset[0], args)
-
-# summary_writer = get_summary_writer(args.dataset, args.model)
-# run(dataset, Net(dataset), args, permute_masks, summary_writer)
+# net = Net(dataset)
+# save_path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'model_save')
+# net.load_state_dict(torch.load(osp.join(save_path, '../model_save/{}_{}.pt'.format(args.model, args.dataset))))
+# visualize(net, dataset[0], args)
+summary_writer = get_summary_writer(args.dataset, args.model)
+run(dataset, Net(dataset), args, permute_masks, summary_writer)
