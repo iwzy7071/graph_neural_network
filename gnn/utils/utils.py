@@ -1,11 +1,14 @@
 import os.path as osp
-from torch_geometric.datasets import Planetoid
+from torch_geometric.datasets import Planetoid, TUDataset
 import torch_geometric.transforms as T
 from torch.utils.tensorboard import SummaryWriter
 import shutil
 import torch
 import numpy as np
 import random
+from ogb.graphproppred import PygGraphPropPredDataset
+from torch_geometric.data import DataLoader
+import torch
 
 seed = 999
 torch.manual_seed(seed)
@@ -28,13 +31,22 @@ def get_planetoid_dataset(name, normalize_features=False, transform=None):
     return dataset
 
 
-def get_summary_writer(dataset, model):
-    path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'log')
+def get_graph_dataset(name, normalize_features=False):
+    path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'dataset')
+    dataset = TUDataset(root=path, name=name)
+    dataset = dataset.shuffle()
+    if normalize_features:
+        dataset.transform = T.NormalizeFeatures()
+    return dataset
+
+
+def get_summary_writer(dataset, model, rotate):
+    path = '/home/wzy/graph_neural_network/log'
     try:
-        shutil.rmtree(osp.join(path, '{}_{}'.format(dataset, model)))
+        shutil.rmtree(osp.join(path, '{}_{}_sum_{}'.format(dataset, model, rotate)))
     except Exception:
         pass
-    writer = SummaryWriter(log_dir=osp.join(path, '{}_{}'.format(dataset, model)))
+    writer = SummaryWriter(log_dir=osp.join(path, '{}_{}_sum_{}'.format(dataset, model, rotate)))
     return writer
 
 
@@ -58,6 +70,14 @@ def random_planetoid_splits(data, num_classes):
     data.train_mask = index_to_mask(train_index, size=data.num_nodes)
     data.val_mask = index_to_mask(rest_index[:500], size=data.num_nodes)
     data.test_mask = index_to_mask(rest_index[500:1500], size=data.num_nodes)
-    print(data.y.size())
-    exit()
     return data
+
+
+def get_rotate_dataset(dataset, rotate):
+    if rotate == 'random':
+        dataset.data.y = torch.randint_like(dataset.data.y, low=0, high=2)
+    elif rotate == 'permutation':
+        rand_index = torch.randperm(dataset.data.y.size(0))
+        dataset.data.y = dataset.data.y[rand_index]
+
+    return dataset
