@@ -31,15 +31,6 @@ def get_planetoid_dataset(name, normalize_features=False, transform=None):
     return dataset
 
 
-def get_graph_dataset(name, normalize_features=False):
-    path = osp.join(osp.dirname(osp.realpath(__file__)), '..', 'dataset')
-    dataset = TUDataset(root=path, name=name)
-    dataset = dataset.shuffle()
-    if normalize_features:
-        dataset.transform = T.NormalizeFeatures()
-    return dataset
-
-
 def get_summary_writer(dataset, model, rotate):
     path = '/home/wzy/graph_neural_network/log'
     try:

@@ -1,9 +1,8 @@
-from utils import get_summary_writer, get_large_graph_env
+from utils import get_summary_writer, get_graph_env
 import torch
 import argparse
 from tqdm import tqdm
 from ogb.graphproppred import Evaluator
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, default='gin')
@@ -20,9 +19,9 @@ parser.add_argument('--emb_dim', type=int, default=300)
 parser.add_argument('--rotate', type=str, default='permutation')
 args = parser.parse_args()
 
-train_loader, valid_loader, test_loader, net = get_large_graph_env(args)
+train_loader, val_loader, test_loader, net = get_graph_env(args)
 optimizer = torch.optim.Adam(net.parameters(), lr=args.lr, weight_decay=args.weight_decay)
-evaluator = Evaluator(args.dataset)
+evaluator = Evaluator('ogbg-ppa')
 cls_criterion = torch.nn.BCEWithLogitsLoss()
 reg_criterion = torch.nn.MSELoss()
 writer = get_summary_writer(args.dataset, args.model, args.rotate)
