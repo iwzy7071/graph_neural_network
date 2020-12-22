@@ -2,12 +2,37 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/flag/deep_gcns_torch" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/flag/deep_gcns_torch/utils" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/flag/deep_gcns_torch/examples/ogb/ogbg_mol" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/gnn" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/s-gin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gin/models" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/PSCN-master" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph_star" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph_star-master" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/SEG-BERT-master" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/graph_star-master/utils" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gfn-master" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ProvablyPowerfulGraphNetworks_torch-master" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/FGW/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Universal-Graph-Embedding-Neural-Network" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gnn-comparison-master" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CapsGNN" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CapsGNN/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Spectral-Designed-Graph-Convolution" isTestSource="false" />
+      <sourceFolder url="file://$USER_HOME$/Downloads/DGN-master" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gnn-label-rotation" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/CPA" />
+      <excludeFolder url="file://$MODULE_DIR$/HGP-SL-master" />
+      <excludeFolder url="file://$MODULE_DIR$/ddgk" />
+      <excludeFolder url="file://$MODULE_DIR$/deep_gcns" />
+      <excludeFolder url="file://$MODULE_DIR$/flag" />
+      <excludeFolder url="file://$MODULE_DIR$/gineplus" />
+      <excludeFolder url="file://$MODULE_DIR$/powerful-gnns-master" />
+      <excludeFolder url="file://$MODULE_DIR$/powerful-gnns-master/models" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <content url="file://$MODULE_DIR$/gin" />
+    <content url="file://$MODULE_DIR$/gin/models" />
+    <orderEntry type="jdk" jdkName="graph_neural_network" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

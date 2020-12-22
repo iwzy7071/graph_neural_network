@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="graph_neural_network" remoteFilesAllowedToDisappearOnAutoupload="false" autoUploadExternalChanges="true" showAutoUploadSettingsWarning="false">
+  <component name="PublishConfigData" autoUpload="On explicit save action" autoUploadExternalChanges="true" showAutoUploadSettingsWarning="false">
     <serverData>
       <paths name="graph_neural_network">
         <serverdata>
           <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" />
+            <mapping deploy="/graph_neural_network" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
     </serverData>
-    <option name="myAutoUpload" value="ALWAYS" />
+    <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
   </component>
 </project>
