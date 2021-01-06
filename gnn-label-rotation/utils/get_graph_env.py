@@ -35,7 +35,7 @@ def get_graph_env(args):
     # Get Dataset
     if args.dataset in ['ENZYMES', 'PROTEINS', 'MUTAG']:
         dataset = TUDataset("/home/wzy/graph_neural_network/dataset", args.dataset)
-    elif args.dataset in ['CIFAR10']:
+    elif args.dataset in ['MNIST']:
         dataset = GNNBenchmarkDataset("/home/wzy/graph_neural_network/dataset", args.dataset)
     # Get Model
     if args.model == 'GCN':
